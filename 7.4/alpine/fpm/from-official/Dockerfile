@@ -1,5 +1,7 @@
 FROM php:7.4.16-fpm-alpine3.13
 
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories;
+
 RUN apk add --no-cache --virtual .run \
         # memcache
         libmemcached
@@ -18,16 +20,17 @@ ENV PHPIZE_DEPS \
 
 RUN apk add --no-cache --virtual .build-deps \
 	    $PHPIZE_DEPS \
-        zlib-dev
+        zlib-dev \
         \
     && docker-php-ext-install pdo_mysql \
     # && docker-php-ext-install igbinary \
     # && docker-php-ext-install msgpack \
     && pecl install memcached \
     && pecl install redis \
-    && pecl install swoole \
     && pecl install xdebug \
-    && docker-php-ext-enable memcached redis swoole xdebug \
+    && docker-php-ext-enable memcached redis xdebug \
+    # && pecl install swoole \
+    # && docker-php-ext-enable swoole \
     \
     && apk del .build-deps \
     && rm -rf /tmp/pear ~/.pearrc

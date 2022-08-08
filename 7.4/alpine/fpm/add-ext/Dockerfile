@@ -5,6 +5,7 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/re
 RUN apk add --no-cache \ 
         php7-simplexml \
         php7-xmlwriter \
+        php7-zip \
     \
     && apk del --purge *-dev \
     && rm -rf /var/cache/apk/* /tmp/* 
